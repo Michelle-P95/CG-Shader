@@ -14,7 +14,7 @@
 
   uniform mat4 mWorld;      // rotate in 3D
   uniform mat4 mView;       // where cam is sitting
-  uniform mat4 mProject;    // points we had before???
+  uniform mat4 mProject;    // points 
 
   // copy-paste -> FRAGMENT SHADER
   varying vec3 fragmentColor;
@@ -50,8 +50,6 @@
 
     gl.clearColor(0.1, 0.1, 0.1, 0.5);
     gl.clear(gl.COLOR_BUFFER_BIT);
-
-    // hier video eig SHADER
 
     var vertexShaderSource = document.getElementById("ds-vertex").text;
     var fragmentShaderSource = document.getElementById("ds-fragment").text;
@@ -142,7 +140,7 @@
 
         var size = 3;                    // position hat 2 ( x,y )
         var type = gl.FLOAT;             
-        var normalize = false;           // normalize or not
+        var normalize = false;           
         var stride = 6 * Float32Array.BYTES_PER_ELEMENT;  // anzahl wie viele stellen für 1 vertex
         var offset = 0;                  // skip or Ignor in array positions
 
@@ -169,7 +167,7 @@
     gl.enableVertexAttribArray(colorAttributeLocation);
 //     
     gl.enable(gl.DEPTH_TEST);
-//  weniger arbeit für PC    
+//  weniger arbeit für PC Grafik  
     gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
     gl.cullFace(gl.back);
@@ -233,7 +231,6 @@
     }
     requestAnimationFrame(loop);
 
-
     // DRAW
     //     var primitiveType = gl.TRIANGLES;
     //     var skip = 0;
@@ -268,6 +265,5 @@
     }
 
 </script>
-
 </body>
 </html>
