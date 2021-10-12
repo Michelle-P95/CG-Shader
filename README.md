@@ -5,10 +5,11 @@
 - Vertex and Fragment Shader
 - 2D, 3D
 - with transformations / matrices
+- Points, Lines, Polygons
 
 ____________________________________
  
-Technologies : 
+Technologies i have used: 
 
 - GLSL
 - OpenGL / WebGL
