@@ -16,6 +16,8 @@
 
 <img width="200" alt="torus_of_lines_and_points_colored" src="https://user-images.githubusercontent.com/56310257/138369281-8cef325f-31ef-4adc-b24f-745780d658cd.png">
 
+> all this codes above were created while i was playing with coding to explore webGL and OpenGL
+
 5_cube.html
 
 <img width="200" alt="cube" src="https://user-images.githubusercontent.com/56310257/138369290-5fa3bdf5-2882-4241-878e-1a8b6f1d0c07.png">
