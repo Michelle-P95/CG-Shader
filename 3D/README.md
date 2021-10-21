@@ -1,17 +1,15 @@
-## computer graphics coding
+## code outcomes
 
-- Vertex and Fragment Shader
-- 2D, 3D
-- with transformations / matrices
-- Points, Lines, Polygons
+1_torus_of_points.html
 
-## technologies i have used: 
+2_torus_of_points_perspective.html
 
- - GLSL
- - OpenGL / WebGL
- - JS
- - HTML
+3_torus_of_lines_and_points.html
 
-____________________________________
+4_torus_of_lines_and_points_colored.html
 
-![image](https://user-images.githubusercontent.com/56310257/137000317-7c0aea02-16d4-40dc-95d7-3c1bd6f69ff0.png)
+5_cube.html
+
+6_cube_rotating_in_2_axis.html
+
+7_cone.html
