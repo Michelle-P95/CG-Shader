@@ -1,17 +1,13 @@
-## computer graphics coding
+## code outcomes
 
-- Vertex and Fragment Shader
-- 2D, 3D
-- with transformations / matrices
-- Points, Lines, Polygons
+1_circle_of_points.html
 
-## technologies i have used: 
+2_triangle_of_lines.html
 
- - GLSL
- - OpenGL / WebGL
- - JS
- - HTML
+3_triangle_polygon.html
 
-____________________________________
+4_colored_square.html
 
-![image](https://user-images.githubusercontent.com/56310257/137000317-7c0aea02-16d4-40dc-95d7-3c1bd6f69ff0.png)
+5_triangle_colored.html
+
+6_triangle_rotating.html
