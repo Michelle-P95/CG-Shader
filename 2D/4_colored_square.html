@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+
+<head>
+</head>
+
+<body>
+    
+    <canvas id="ds_draw_here"></canvas>
+
+    <script id="ds-vertex" type="notjs">
+    attribute vec2 position; 
+    attribute vec3 vertexColor;
+
+    varying vec3 fragmentColor;
+ 
+   void main()
+   { 
+      gl_Position = vec4(position, 0.0, 1.0); 
+      fragmentColor = vertexColor;
+   } 
+</script>
+
+    <script id="ds-fragment" type="notjs">
+   precision mediump float;
+
+   varying vec3 fragmentColor;
+   
+   void main()
+   { 
+       gl_FragColor = vec4(fragmentColor, 1);       
+   }
+</script>
+
+    <script>
+        // - - - - - - - - - - - - - - rohbau
+        var canvas_ds = document.getElementById("ds_draw_here");
+        canvas_ds.width = 400;
+        canvas_ds.height = 400;                                   // -- gleiche Zahl sonst verzert
+        var gl = canvas_ds.getContext("webgl");
+
+        gl.clearColor(1, 1, 1, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        var vertexShaderSource = document.getElementById("ds-vertex").text;
+        var fragmentShaderSource = document.getElementById("ds-fragment").text;
+
+        var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+        var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+        var program = createProgram(gl, vertexShader, fragmentShader);
+        gl.useProgram(program);
+
+        // - - - - - - - - - - - - - - array & (METHODE .push) & buffer dafür
+        var positions = [
+        //    x     y      R  G  B    
+            -0.8,  0.8,    1, 0, 1, 
+             0.8,  0.8,    0, 0, 1,
+             0.8, -0.8,    0, 1, 1,
+            -0.8, -0.8,    0, 1, 0,
+           
+        ];
+
+        // var steps = 15;    // anzahl :   der Kreise
+        //     var steps2 = 30;   // anzahl :   Points eines Kreises
+        //     var r = 0.3;       // r :        einzelnen Kreisen
+        //     var R = 0.6;       // r :        Donut Loch
+
+        //     for (var t = 0; t < steps2; t++)                   // ! -- so oft wie For - so viele Pixel
+        //         for (var p = 0; p < steps; p++) {
+        //             var x = (R + r * Math.cos(Math.PI * 2 * t / steps2)) * Math.cos(Math.PI * 2 * p / steps);
+        //             var y = r * Math.sin(Math.PI * 2 * t / steps2);
+        //             var z = (R + r * Math.cos(Math.PI * 2 * t / steps2)) * Math.sin(Math.PI * 2 * p / steps);
+        //             positions.push(x);
+        //             positions.push(y);
+        //             positions.push(z);
+        //         }
+
+
+        var indices = [
+            0, 1, 2,
+            2, 3, 0,
+        ];    
+
+        var positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+        
+        var indicesBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+
+        // - - - - - - - - - - - - - - get attributs from Vshader + enable + Pointer  --->  ! für jedes attribute die 3 zeilen
+        var positionAttributeLocation = gl.getAttribLocation(program, "position");
+        var colorAttributeLocation = gl.getAttribLocation(program, "vertexColor");
+
+        gl.enableVertexAttribArray(positionAttributeLocation);
+        gl.enableVertexAttribArray(colorAttributeLocation);
+
+        // size = 2;                                         : (x,y) = 2    (RGB) = 3
+        var type = gl.FLOAT;
+        var normalize = false;
+        var stride = 5 * Float32Array.BYTES_PER_ELEMENT;  // : INSGESAMT pro punkt     (x,y,RGB) = 5
+        //var offset = 0;                                    : wie viele stellen skippen 
+
+        gl.vertexAttribPointer(
+            positionAttributeLocation, 2, type, normalize, stride, 0
+        )
+        gl.vertexAttribPointer(
+            colorAttributeLocation, 3, type, normalize, stride, 2 * Float32Array.BYTES_PER_ELEMENT
+        )
+
+        // - - - - - - - - - - - - - -  END -> Draw
+        // var primitiveType = gl.TRIANGLES;
+        // var offset = 0;
+        // var count = 3;
+        //gl.drawArrays(primitiveType, offset, count);  // --> bei ARRAY_BUFFER (arrays)
+
+        gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0); // --> bei ELEMENT_ARRAY_BUFFER (indices)
+       
+
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+        function createShader(gl, type, source) {
+            var shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+            if (success) {
+                return shader;
+            }
+            console.log(gl.getShaderInfoLog(shader));
+            gl.deleteShader(shader);
+        }
+
+        function createProgram(gl, vertexShader, fragmentShader) {
+            var program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            var success = gl.getProgramParameter(program, gl.LINK_STATUS);
+            if (success) {
+                return program;
+            }
+            console.log(gl.getProgramInfoLog(program));
+            gl.deleteProgram(program);
+        }
+
+    </script>
+
+</body>
+
+</html>
+

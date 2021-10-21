@@ -3,16 +3,16 @@
 <head>    
 </head>    
 <body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
+  
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
  <canvas id="ds_draw_here"></canvas>
 
 <script id="ds-vertex" type="notjs"> 
    attribute vec4 a_position; 
-   uniform mat4 mPosition;
  
    void main()
    { 
-      gl_Position = mPosition * a_position;
+      gl_Position = a_position;
       gl_PointSize = 3.0; 
    } 
 </script> 
@@ -22,7 +22,7 @@
    
    void main()
    { 
-       gl_FragColor = vec4(1, 0, 0, 1);       // return yellow 
+       gl_FragColor = vec4(1, 1, 0, 1);       // return yellow 
    }
 </script> 
 
@@ -35,10 +35,6 @@
   canvas_ds.height = 400;
   var gl = canvas_ds.getContext("webgl");
 
-     // Clear the canvas
-     gl.clearColor(0, 0, 0, 0.3);
-     gl.clear(gl.COLOR_BUFFER_BIT);
-
   // Get the strings for our GLSL shaders
   var vertexShaderSource = document.getElementById("ds-vertex").text;
   var fragmentShaderSource = document.getElementById("ds-fragment").text;
@@ -49,38 +45,53 @@
 
   // Link the two shaders into a program
   var program = createProgram(gl, vertexShader, fragmentShader);
-  // Tell it to use our program (pair of shaders)
-  gl.useProgram(program);
-  
- // Data
+
+  // Create a buffer and put three 2d clip space points in it
+  var positionBuffer = gl.createBuffer();
+
+  // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = positionBuffer)
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
   var positions = [
   ];
 
-  var steps = 15;
-  var steps2 = 30;
-    var r = 0.3;
-    var R = 0.6;
+   var steps = 15;    // anzahl :   der Kreise
+   var steps2 = 30;   // anzahl :   Points eines Kreises
+   var r = 0.3;       // r :        einzelnen Kreisen
+   var R = 0.6;       // r :        Donut Loch
    
     for (var t = 0; t < steps2; t++)                   // ! -- so oft wie For - so viele Pixel
         for (var p = 0; p < steps; p++) {
-        var x = (R + r * Math.cos(Math.PI * 2 * t / steps)) * Math.cos(Math.PI * 2 * p / steps);
-        var y = (R + r * Math.cos(Math.PI * 2 * t / steps)) * Math.sin(Math.PI * 2 * p / steps);
-        var z = r * Math.sin(Math.PI * 2 * t / steps/2);
+        var x = (R + r * Math.cos(Math.PI * 2 * t / steps2)) * Math.cos(Math.PI * 2 * p / steps);
+        var y = r * Math.sin(Math.PI * 2 * t / steps2);
+        var z = (R + r * Math.cos(Math.PI * 2 * t / steps2)) * Math.sin(Math.PI * 2 * p / steps);
         positions.push(x);
         positions.push(y);
         positions.push(z);
        }
     
-    // Create a buffer and put three 2d clip space points in it
-    var positionBuffer = gl.createBuffer();
-    // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = positionBuffer)
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
+
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+// !! code above this line is initialization code.
+// !! code below this line is rendering code.
+
+  // Clear the canvas
+  gl.clearColor(0, 0, 0, 0.3);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+
+  // Tell it to use our program (pair of shaders)
+  gl.useProgram(program);
 
   // look up where the vertex data needs to go.
   var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
-  
+
+  // Turn on the attribute
+  gl.enableVertexAttribArray(positionAttributeLocation);
+
+  // Bind the position buffer.
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
   // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
   var size = 3;          // 2 components per iteration
   var type = gl.FLOAT;   // the data is 32bit floats
@@ -92,22 +103,7 @@
      positionAttributeLocation, size, type, normalize, stride, offset
   )
 
-  // Turn on the attribute
-  gl.enableVertexAttribArray(positionAttributeLocation);
-
-
-// D R A W - MATRIZEN
-   gl.enable(gl.DEPTH_TEST);
-   // einzelne matrizen
-   var projection = mat4.perspective(mat4.create(), 45, 1.0, 0.1, 1000);
-   var look = mat4.lookAt(mat4.create(), [3, 3, -3], [0, 0, 0], [0, 1, 0]);
-   // m x m = transformationsmatrix
-   var mtransformation = mat4.multiply(mat4.create(), projection, look);
-   // get aktuelle Matrix von Vshader && save  in variable
-   var currentM = gl.getUniformLocation(program, "mPosition");
-   gl.uniformMatrix4fv(currentM, gl.FALSE, mtransformation);
-
-  // D R A W - Points
+  // draw
   var primitiveType = gl.POINTS;
   var offset = 0;
   var count = positions.length/3;

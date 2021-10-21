@@ -9,21 +9,31 @@
 
 <script id="ds-vertex" type="notjs"> 
    attribute vec4 a_position; 
+   attribute vec3 a_normal;
+
    uniform mat4 mAbbildung;
+
+   varying vec3 v_normal;
  
    void main()
    { 
       gl_Position = mAbbildung * a_position;
       gl_PointSize = 3.0; 
+
+      v_normal = a_normal;
    } 
 </script> 
 
 <script id="ds-fragment" type="notjs">
    precision mediump float;
+
+   varying vec3 v_normal;
    
    void main()
    { 
-       gl_FragColor = vec4(1, 1, 0, 1);       // return yellow 
+    vec3 normal = normalize(v_normal);   
+    
+    gl_FragColor = vec4(1, 1, 0, 1);       // return yellow 
    }
 </script> 
 
@@ -60,16 +70,6 @@
     // anzahl :   Points eines Kreises
    var r = 0.3;       // r :        einzelnen Kreisen
    var R = 1.2;       // r :        Donut Loch
-   
-    // for (var t = 0; t < steps2; t++)                   // ! -- so oft wie For - so viele Pixel
-    //     for (var p = 0; p < steps; p++) {
-    //     var x = (R + r * Math.cos(Math.PI * 2 * t / steps2)) * Math.cos(Math.PI * 2 * p / steps);
-    //     var y = r * Math.sin(Math.PI * 2 * t / steps2);
-    //     var z = (R + r * Math.cos(Math.PI * 2 * t / steps2)) * Math.sin(Math.PI * 2 * p / steps);
-    //     positions.push(x);
-    //     positions.push(y);
-    //     positions.push(z);
-    //   }
 
     var pointsProKreis = 7;
     var anzahlKreise = 4;

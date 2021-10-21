@@ -43,10 +43,8 @@
         canvas_ds.height = 400;
         var gl = canvas_ds.getContext("webgl");
 
-        gl.clearColor(0.1, 0.1, 0.1, 0.5);
+        gl.clearColor(1, 1, 1, 0.5);
         gl.clear(gl.COLOR_BUFFER_BIT);
-
-        // hier video eig SHADER
 
         var vertexShaderSource = document.getElementById("ds-vertex").text;
         var fragmentShaderSource = document.getElementById("ds-fragment").text;
@@ -141,7 +139,6 @@
         gl.vertexAttribPointer(positionAttributeLocation, 3, gl.FLOAT, false, 6 * Float32Array.BYTES_PER_ELEMENT, 0);
         gl.vertexAttribPointer(colorAttributeLocation, 3, gl.FLOAT, false, 6 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT );
 
-
         gl.enable(gl.DEPTH_TEST);
             // einzelne matrizen
             var projection = mat4.perspective(mat4.create(), 45, 1.0, 0.1, 1000);
@@ -152,12 +149,11 @@
             var currentM = gl.getUniformLocation(program, "mAbbildung");
             gl.uniformMatrix4fv(currentM, gl.FALSE, mtransformation);
 
-        
-      // ---------------------------
+        // D R A W    
         gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
 
+       // ---------------------------
 
-        
         function createShader(gl, type, source) {
             var shader = gl.createShader(type);
             gl.shaderSource(shader, source);
