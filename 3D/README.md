@@ -28,9 +28,11 @@
 
 7_cube_rotating.html
 
-
+https://user-images.githubusercontent.com/56310257/147236057-4bd9a998-85bf-4476-a742-165cd199d06e.mov
 
 8_cube_rotating_in_2_axis.html
 
-https://user-images.githubusercontent.com/56310257/138369294-376c394c-a01b-4b98-b730-efaa67a5b739.mov
+https://user-images.githubusercontent.com/56310257/147236078-2a2c99b6-46c7-4bef-8493-38b5c7e629c8.mov
+
+
 
