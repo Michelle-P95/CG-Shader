@@ -22,11 +22,15 @@
 
 <img width="200" alt="cube" src="https://user-images.githubusercontent.com/56310257/138369290-5fa3bdf5-2882-4241-878e-1a8b6f1d0c07.png">
 
-7_cone.html
+6_cone.html
 
 <img width="200" alt="cone" src="https://user-images.githubusercontent.com/56310257/138369307-77d7473f-5219-47d0-93cc-984312f36ddc.png">
 
-6_cube_rotating_in_2_axis.html
+7_cube_rotating.html
+
+
+
+8_cube_rotating_in_2_axis.html
 
 https://user-images.githubusercontent.com/56310257/138369294-376c394c-a01b-4b98-b730-efaa67a5b739.mov
 

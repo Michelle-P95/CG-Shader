@@ -20,8 +20,11 @@
 
 <img width="200" alt="triangle_colored" src="https://user-images.githubusercontent.com/56310257/138369113-fcd057cc-7e90-42ed-b4c9-dce5df5efd7c.png">
 
-
 6_triangle_rotating.html
 
 https://user-images.githubusercontent.com/56310257/138369167-f13c8e27-4741-470e-96e5-b90d7051da87.mov
+
+7_boomerang.html
+
+
 
